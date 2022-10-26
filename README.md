@@ -1,2 +1,1 @@
-# muml
-Multimodal UML
+# Multimodal UML
