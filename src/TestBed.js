@@ -56,6 +56,36 @@ function playLtoR(){
 	let order = [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
 	play(order);
 }
+let presets = [
+	[ "A4", "A4", "A4", "A3", "A3", "A3", "A2", "A2", "A2" ],
+	[ "A4", "B4", "C5", "A3", "B3", "C4", "A2", "B2", "C3" ]
+]
+function applyPreset(event){
+	let choice = document.getElementById('presetSelect').value;
+	for(let i=1; i<=presets[choice].length; ++i){
+		let current=document.getElementById("note-an"+i)
+		current.value = presets[choice][i-1];
+		current=document.getElementById("cb-an"+i);
+		current.checked = true;
+	}
+}
+
+function Preset(props){
+	const options = [
+		{ label: "One", value: "0" },
+		{ label: "Two", value: "1" }
+	]
+	return (
+		<div className="preset">
+			<label htmlFor="presetSelect"><b>Preset: </b></label>
+			<select name="presetSelect" id="presetSelect" onChange={applyPreset}>
+			{options.map((option) => (
+				<option key={option.value} value={option.value}>{option.label}</option>
+			))}
+			</select>
+		</div>
+	)
+}
 
 function TestBed(props) {
 	let [speed, setSpeed ] = React.useState(250);
@@ -74,6 +104,9 @@ function TestBed(props) {
 		<input type="radio" name="playOrder" id="cwOrder" value="Clockwise" defaultChecked></input>
 		<label htmlFor="ltrOrder">Left-to-right</label>
 		<input type="radio" name="playOrder" id="ltrOrder" value="Left-to-right"></input>
+		</div>
+		<div className="col">
+			<Preset/>
 		</div>
 		</div>
 		<div className="row">
