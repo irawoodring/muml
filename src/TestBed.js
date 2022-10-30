@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './TestBed.css';
 import AudioNode from './AudioNode';
 import {Howl, Howler} from 'howler';
-import React from 'react';
+import React, {useState, useEffect } from 'react';
 import { Synth } from './audiosynth.js';
 
 function playAll(){
@@ -74,11 +74,12 @@ function Preset(props){
 	const options = [
 		{ label: "One", value: "0" },
 		{ label: "Two", value: "1" }
-	]
+	];
+	useEffect( () => applyPreset() );
 	return (
 		<div className="preset">
 			<label htmlFor="presetSelect"><b>Preset: </b></label>
-			<select name="presetSelect" id="presetSelect" onChange={applyPreset}>
+			<select name="presetSelect" id="presetSelect" onChange={applyPreset} defaultValue="0">
 			{options.map((option) => (
 				<option key={option.value} value={option.value}>{option.label}</option>
 			))}
