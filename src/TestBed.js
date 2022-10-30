@@ -6,29 +6,55 @@ import React from 'react';
 import { Synth } from './audiosynth.js';
 
 function playAll(){
-	let time = document.getElementById('speedRange').value;
-	for(let i=1; i<10; ++i){
-		let note = document.getElementById("note-an"+i).value;
-		let timbre = document.getElementById("timbre-an"+i).value;
-		setTimeout(
-			() => { 
-				let col = (i-1) % 3;
-				let side = 0;
-				if(col == 0){
-					side = -1;
-				}
-				if(col == 2){
-					side = 1;
-				}
-				let sound = Synth.generate(timbre, note.charAt(0), note.charAt(1), 2);
-				let h = new Howl({
-					src: sound,
-					stereo: side,
-					format: 'wav',
-				});
-				h.play();
-			}, i*time);
+	let direction=document.getElementsByName('playOrder');
+	if(direction[0].checked){
+		playClockwise();
 	}
+	if(direction[1].checked){
+		playLtoR();
+	}
+}
+
+function playClockwise(){
+	let order = [ 1, 2, 3, 6, 9, 8, 7, 4 ];
+	play(order);	
+}
+
+function play(order){
+	let time = document.getElementById('speedRange').value;
+        let count = 0;
+        for(const i of order){
+		console.log(i);
+                if(document.getElementById("cb-an"+i).checked){
+                        let note = document.getElementById("note-an"+i).value;
+                        let timbre = document.getElementById("timbre-an"+i).value;
+                        setTimeout(
+                                () => {
+                                        let col = (i-1) % 3;
+                                        let side = 0;
+                                        if(col == 0){
+                                                side = -1;
+                                        }
+                                        if(col == 2){
+                                                side = 1;
+                                        }
+                                        let sound = Synth.generate(timbre, note.charAt(0), note.charAt(1), 2);
+                                        let h = new Howl({
+                                                src: sound,
+                                                stereo: side,
+                                                format: 'wav',
+                                        });
+                                        h.play();
+                                }, count*time);
+                        count++;
+                }
+        }
+
+}
+
+function playLtoR(){
+	let order = [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
+	play(order);
 }
 
 function TestBed(props) {
@@ -41,6 +67,15 @@ function TestBed(props) {
 	};
 	return (
 		<div className="TestBed container">
+		<div className="row">
+		<div className="col">
+		<label htmlFor="playOrder"><b>Play Order:</b> </label>
+		<label htmlFor="cwOrder">Clockwise</label>
+		<input type="radio" name="playOrder" id="cwOrder" value="Clockwise" defaultChecked></input>
+		<label htmlFor="ltrOrder">Left-to-right</label>
+		<input type="radio" name="playOrder" id="ltrOrder" value="Left-to-right"></input>
+		</div>
+		</div>
 		<div className="row">
 		<div className="col">
 		<AudioNode id='an1'/>

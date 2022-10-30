@@ -50,6 +50,9 @@ class AudioNode extends React.Component {
 			<br />
 			<Timbre id={this.props.id}/>
 			<button onClick={() => this.playSound(this.props.id) }>Play sample</button>
+			<br />
+			<label htmlFor='enabled'>Enabled</label>
+			<input type='checkbox' id={"cb-"+this.props.id} />
 			</div>
 		);
 	}
@@ -60,7 +63,7 @@ class AudioNode extends React.Component {
 		selected = document.getElementById("timbre-"+id);
 		let timbre = selected[selected.selectedIndex].innerHTML;
 		let piano = Synth.createInstrument(timbre);
-		piano.play(note.charAt(0), note.charAt(1), 2); // plays C4 for 2s using the 'piano' sound profile
+		piano.play(note.charAt(0), note.charAt(1), 2);
 	}
 }
 
